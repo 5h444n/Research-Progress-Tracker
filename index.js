@@ -1,1 +1,1 @@
-console.log('Happy developing ✨')
+console.log('SAD LAB PROJECT REPO');
