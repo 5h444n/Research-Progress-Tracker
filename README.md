@@ -7,7 +7,7 @@ The Research Project Tracker will provide a secure, cloud‑hosted web platform 
 <table>
   <tr>
     <td align="center" width="120">
-      <img src="https://avatars.githubusercontent.com/u/5h444n?s=120" alt="Ahnaf Shaan" style="border-radius:50%"/>
+      <img src="https://github.com/5h444n.png?size=120" alt="Ahnaf Shaan" style="border-radius:50%"/>
     </td>
     <td>
       <h3>Ahnaf Shaan</h3>
