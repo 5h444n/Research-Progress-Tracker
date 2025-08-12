@@ -1,0 +1,1 @@
+# HTTP handlers (thin): parse request → call service/model → return response.

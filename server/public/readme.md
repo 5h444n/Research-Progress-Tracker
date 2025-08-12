@@ -1,0 +1,1 @@
+static files (images, sample docs). (Not for user uploads in production.)
