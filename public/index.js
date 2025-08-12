@@ -1,1 +1,0 @@
-console('This folder is for frontedd code.');
