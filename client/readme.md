@@ -1,1 +1,1 @@
-# Client folder is for frontend code.
+# This folder is for client code

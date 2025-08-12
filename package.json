@@ -1,7 +1,8 @@
 {
-  "name": "Code",
+  "name": "Research Project Progress Tracker ",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Research Project Tracker will provide a secure, cloud‑hosted web platform tailored to the needs of undergraduate research teams and their faculty supervisors.\n",
+  "author": "Shan",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
