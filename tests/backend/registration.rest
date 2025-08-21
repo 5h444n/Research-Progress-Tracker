@@ -1,0 +1,41 @@
+### Test User Registration - Success
+POST http://localhost:5030/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "mypassword123"
+}
+
+### Test User Registration - Missing Fields
+POST http://localhost:5030/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "incomplete"
+}
+
+### Test User Registration - Duplicate User
+POST http://localhost:5030/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "mypassword123"
+}
+
+### Test User Registration - Only Required Fields
+POST http://localhost:5030/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "jane123",
+  "email": "jane@example.com",
+  "password": "password456"
+}
