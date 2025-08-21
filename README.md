@@ -1,4 +1,4 @@
-# Research Progress Tracker
+# Research Project Progress Tracker
 
 The Research Project Tracker will provide a secure, cloud‑hosted web platform tailored to the needs of undergraduate research teams and their faculty supervisors.
 
