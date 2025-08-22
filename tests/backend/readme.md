@@ -1,0 +1,1 @@
+- create a authController.test.js file to test the authController functions
