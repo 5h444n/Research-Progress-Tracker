@@ -1,0 +1,60 @@
+### Test Login - Successful
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "mypassword123"
+}
+
+### Test Login - Missing Email
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "password": "mypassword123"
+}
+
+### Test Login - Missing Password
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com"
+}
+
+### Test Login - Invalid Email Format
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "password": "mypassword123"
+}
+
+### Test Login - Short Password
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "123"
+}
+
+### Test Login - Wrong Email
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "nonexistent@example.com",
+  "password": "mypassword123"
+}
+
+### Test Login - Wrong Password
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "wrongpassword"
+}
