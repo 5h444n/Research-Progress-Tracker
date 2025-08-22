@@ -20,6 +20,6 @@ model User {
   updatedAt      DateTime @default(now()) @db.Timestamp(6)
   lastLogin      DateTime? @db.Timestamp(6)
 
-  @@index([username]) // Optional: Add index for faster lookups
-  @@index([email])   // Optional: Add index for faster lookups
+  @@index([username])
+  @@index([email])
 }
