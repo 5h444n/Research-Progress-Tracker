@@ -1,0 +1,109 @@
+### Register a new user
+POST http://localhost:5030/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "email": "test@exam.com",
+  "password": "password123"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Status code is not 201");
+        client.assert(response.body.message === "User registered successfully", "Unexpected response message");
+    });
+%}
+
+### Login with registered user
+POST http://localhost:5030/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "password123"
+}
+
+> {%
+    client.test("Login successful", function() {
+        client.assert(response.status === 200, "Status code is not 200");
+        client.assert(response.body.message === "Login successful", "Unexpected response message");
+        client.assert(response.body.token, "Token not present in response");
+        client.global.set("authToken", response.body.token); // Store token for later use
+    });
+%}
+
+### Create a new project (using stored token)
+POST http://localhost:5030/api/projects
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Project-4",
+  "description": "test project description",
+  "startDate": "2025-08-25",
+  "endDate": "2025-09-25",
+  "status": "active"
+}
+
+> {%
+    client.test("Project created successfully", function() {
+        client.assert(response.status === 201, "Status code is not 201");
+        client.assert(response.body.message === "Project created successfully", "Unexpected response message");
+        client.assert(response.body.project.id, "Project ID not present");
+    });
+%}
+
+### Get all projects
+GET http://localhost:5030/api/projects
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+> {%
+    client.test("Get projects successful", function() {
+        client.assert(response.status === 200, "Status code is not 200");
+        client.assert(Array.isArray(response.body.projects), "Projects is not an array");
+        client.assert(response.body.pagination, "Pagination metadata missing");
+        client.assert(typeof response.body.pagination.hasNextPage === 'boolean', "hasNextPage missing");
+    });
+%}
+
+### Get next page of projects
+GET http://localhost:5030/api/projects
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+> {%
+    client.test("Get next page successful", function() {
+        client.assert(response.status === 200, "Status code is not 200");
+        client.assert(Array.isArray(response.body.projects), "Projects is not an array");
+    });
+%}
+
+### Update a project
+PUT http://localhost:5030/api/projects/5
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Updated Test Project",
+  "description": "Updated description"
+}
+
+> {%
+    client.test("Project updated successfully", function() {
+        client.assert(response.status === 200, "Status code is not 200");
+        client.assert(response.body.message === "Project updated successfully", "Unexpected response message");
+    });
+%}
+
+### Delete a project
+DELETE http://localhost:5030/api/projects/5
+Authorization: Bearer {{authToken}}
+
+> {%
+    client.test("Project deleted successfully", function() {
+        client.assert(response.status === 200, "Status code is not 200");
+        client.assert(response.body.message === "Project deleted successfully", "Unexpected response message");
+    });
+%}

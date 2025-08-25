@@ -5,20 +5,12 @@ import helmet from 'helmet';
 import winston from 'winston';
 import { PrismaClient } from '@prisma/client';
 import authRoutes from './routes/authRoutes.js';
+import projectRoutes from "./routes/projectRoutes.js";
+import { logger } from './utils/logger.js';
 
 config();
 const app = express();
 const prisma = new PrismaClient();
-
-// Set up Winston logger
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
-    ],
-});
 
 if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
@@ -31,11 +23,13 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
     message: { error: 'Too many requests, please try again later.' },
+    keyGenerator: (req) => req.user?.userId || req.ip, // Limit per user if authenticated
 });
 
 app.use(express.json());
-app.use('/api/auth', limiter);
+app.use('/api', limiter);
 app.use('/api/auth', authRoutes);
+app.use('/api',projectRoutes)
 
 app.use((err, req, res, next) => {
     logger.error(err.stack);
