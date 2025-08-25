@@ -16,10 +16,42 @@ model User {
   lastName       String?  @db.VarChar(50)
   isActive       Boolean  @default(true)
   hashedPassword String   @db.VarChar(255)
+  role          String   @default("user") @db.VarChar(50)
   createdAt      DateTime @default(now()) @db.Timestamp(6)
   updatedAt      DateTime @default(now()) @db.Timestamp(6)
   lastLogin      DateTime? @db.Timestamp(6)
+  projects       Project[]
+  AuditLog      AuditLog[]
 
-  @@index([username]) // Optional: Add index for faster lookups
-  @@index([email])   // Optional: Add index for faster lookups
+  @@index([username])
+  @@index([email])
+
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(100)
+  description String?  @db.Text
+  userId      Int
+  startDate   DateTime @db.Date
+  endDate     DateTime? @db.Date
+  status      String   @default("active") @db.VarChar(50)
+  metadata    Json?
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  deletedAt   DateTime? @db.Timestamp(6)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  action    String   @db.VarChar(50)
+  entity    String   @db.VarChar(50)
+  entityId  Int
+  details   Json?
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  user      User     @relation(fields: [userId], references: [id])
 }
