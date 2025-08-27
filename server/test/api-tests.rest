@@ -39,7 +39,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "Project-4",
+  "title": "Project-5",
   "description": "test project description",
   "startDate": "2025-08-25",
   "endDate": "2025-09-25",
@@ -81,7 +81,7 @@ Content-Type: application/json
 %}
 
 ### Update a project
-PUT http://localhost:5030/api/projects/5
+PUT http://localhost:5030/api/projects/7
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -98,12 +98,40 @@ Authorization: Bearer {{authToken}}
 %}
 
 ### Delete a project
-DELETE http://localhost:5030/api/projects/5
+DELETE http://localhost:5030/api/projects/6
 Authorization: Bearer {{authToken}}
 
 > {%
     client.test("Project deleted successfully", function() {
         client.assert(response.status === 200, "Status code is not 200");
         client.assert(response.body.message === "Project deleted successfully", "Unexpected response message");
+    });
+%}
+
+### Upload a single document (successful case)
+POST http://localhost:5030/api/upload
+Authorization: Bearer {{authToken}}
+Content-Type: multipart/form-data; boundary=upload-boundary
+
+--upload-boundary
+Content-Disposition: form-data; name="projectId"
+
+1
+--upload-boundary
+Content-Disposition: form-data; name="document"; filename="test-document.pdf"
+Content-Type: application/pdf
+
+< ./test-files/test-document.pdf
+--upload-boundary--
+
+> {%
+    client.test("Document uploaded successfully", function() {
+        client.assert(response.status === 201, "Status code is not 201");
+        client.assert(response.body.message === "Document uploaded successfully", "Unexpected response message");
+        client.assert(response.body.document, "Document object not present");
+        client.assert(response.body.document.id, "Document ID not present");
+        client.assert(response.body.document.fileName, "Document fileName not present");
+        client.assert(response.body.document.originalName === "test-document.pdf", "Original name mismatch");
+        client.global.set("documentId", response.body.document.id); // Store document ID for future use
     });
 %}
