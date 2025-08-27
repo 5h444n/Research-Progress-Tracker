@@ -1,6 +1,6 @@
 import {config} from 'dotenv';
 import express from 'express';
-import rateLimit from 'express-rate-limit';
+import rateLimit, {ipKeyGenerator} from 'express-rate-limit';
 import helmet from 'helmet';
 import winston from 'winston';
 import {PrismaClient} from '@prisma/client';
@@ -24,7 +24,7 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
     message: {error: 'Too many requests, please try again later.'},
-    keyGenerator: (req) => req.user?.userId || req.ip, // Limit per user if authenticated
+    keyGenerator: (req) => req.user?.userId?.toString() || ipKeyGenerator(req), // Use ipKeyGenerator helper
 });
 
 app.use(express.json());

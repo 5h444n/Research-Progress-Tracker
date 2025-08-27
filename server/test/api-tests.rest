@@ -39,7 +39,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "Project-4",
+  "title": "Project-5",
   "description": "test project description",
   "startDate": "2025-08-25",
   "endDate": "2025-09-25",
@@ -81,7 +81,7 @@ Content-Type: application/json
 %}
 
 ### Update a project
-PUT http://localhost:5030/api/projects/5
+PUT http://localhost:5030/api/projects/7
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
