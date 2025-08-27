@@ -49,7 +49,6 @@ async function startServer() {
     }
 }
 
-console.log(process.env.UPLOAD_DIR);
 startServer();
 
 process.on('SIGTERM', async () => {
