@@ -9,38 +9,39 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  username        String   @unique @db.VarChar(50)
-  email           String   @unique @db.VarChar(100)
-  firstName      String?  @db.VarChar(50)
-  lastName       String?  @db.VarChar(50)
-  isActive       Boolean  @default(true)
-  hashedPassword String   @db.VarChar(255)
-  role          String   @default("user") @db.VarChar(50)
-  createdAt      DateTime @default(now()) @db.Timestamp(6)
-  updatedAt      DateTime @default(now()) @db.Timestamp(6)
-  lastLogin      DateTime? @db.Timestamp(6)
+  id             Int        @id @default(autoincrement())
+  username       String     @unique @db.VarChar(50)
+  email          String     @unique @db.VarChar(100)
+  firstName      String?    @db.VarChar(50)
+  lastName       String?    @db.VarChar(50)
+  isActive       Boolean    @default(true)
+  hashedPassword String     @db.VarChar(255)
+  role           String     @default("user") @db.VarChar(50)
+  createdAt      DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime   @default(now()) @db.Timestamp(6)
+  lastLogin      DateTime?  @db.Timestamp(6)
   projects       Project[]
-  AuditLog      AuditLog[]
+  AuditLog       AuditLog[]
+  Document       Document[]
 
   @@index([username])
   @@index([email])
-
 }
 
 model Project {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(100)
-  description String?  @db.Text
+  id          Int        @id @default(autoincrement())
+  title       String     @db.VarChar(100)
+  description String?    @db.Text
   userId      Int
-  startDate   DateTime @db.Date
-  endDate     DateTime? @db.Date
-  status      String   @default("active") @db.VarChar(50)
+  startDate   DateTime   @db.Date
+  endDate     DateTime?  @db.Date
+  status      String     @default("active") @db.VarChar(50)
   metadata    Json?
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime @default(now()) @db.Timestamp(6)
-  deletedAt   DateTime? @db.Timestamp(6)
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime   @default(now()) @db.Timestamp(6)
+  deletedAt   DateTime?  @db.Timestamp(6)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Document    Document[]
 
   @@index([userId])
 }
@@ -54,4 +55,22 @@ model AuditLog {
   details   Json?
   createdAt DateTime @default(now()) @db.Timestamp(6)
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Document {
+  id           Int      @id @default(autoincrement())
+  fileName     String   @db.VarChar(255)
+  originalName String   @db.VarChar(255)
+  path         String   @db.VarChar(500)
+  mimeType     String   @db.VarChar(100)
+  size         Int
+  uploadedAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime @default(now()) @db.Timestamp(6)
+  projectId    Int
+  uploadedById Int
+
+  project    Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  uploadedBy User    @relation(fields: [uploadedById], references: [id])
+
+  @@map("documents")
 }
